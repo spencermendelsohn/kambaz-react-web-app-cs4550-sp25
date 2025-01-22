@@ -38,7 +38,7 @@ export default function Dashboard() {
             <div>
               <h5> CS1236 Intro to Writing </h5>
               <p className="wd-dashboard-course-title">
-                Introduction to Writing </p>
+                Introduction to Writing</p>
               <button> Go</button>
             </div>
           </Link>
