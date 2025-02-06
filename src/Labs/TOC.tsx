@@ -5,7 +5,7 @@ export default function TOC() {
     return (
         <Nav variant="pills">
             <Nav.Item>
-                <Nav.Link href="#/Labs">Lab 1</Nav.Link>
+                <Nav.Link href="#/Labs">Labs</Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link href="#/Labs/Lab1">Lab 1</Nav.Link>
@@ -20,7 +20,7 @@ export default function TOC() {
                 <Nav.Link href="#/Kambaz">Kambaz</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link href="https://github.com/jannunzi">My GitHub</Nav.Link>
+                <Nav.Link href="https://github.com/spencermendelsohn" target="_blank">My GitHub</Nav.Link>
             </Nav.Item>
         </Nav>
     );}
