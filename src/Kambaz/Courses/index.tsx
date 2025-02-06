@@ -28,6 +28,9 @@ export default function Courses() {
                         <Route path="Assignments" element={<Assignments />} />
                         <Route path="Assignments/:aid" element={<AssignmentEditor />} />
                         <Route path="People" element={<PeopleTable />} />
+                        <Route path="Piazza" element={<h1>Piazza</h1>} />
+                        <Route path="Zoom" element={<h1>Zoom</h1>} />
+                        <Route path="Quizzes" element={<h1>Quizzes</h1>} />
                     </Routes>
                 </div>
             </div>
