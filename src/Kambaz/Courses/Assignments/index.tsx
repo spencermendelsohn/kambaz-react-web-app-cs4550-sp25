@@ -3,14 +3,14 @@ import { BsGripVertical } from "react-icons/bs";
 import AssignmentButtons from "./AssignmentButtons.tsx";
 // import AssignmentControls from "./AssignmentControls.tsx";
 import { useParams } from "react-router";
-import * as db from "../../Database";
+
 import LessonControlButtons from "../Modules/LessonControlButtons.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+
 import AssignmentControls from "./AssignmentControls.tsx";
 import {useState} from "react";
 import {addAssignment} from "./reducer.ts";
-import {deleteModule, updateModule} from "../Modules/reducer.ts";
+
 
 export default function Assignments() {
     const { currentUser } = useSelector((state: any) => state.accountReducer);

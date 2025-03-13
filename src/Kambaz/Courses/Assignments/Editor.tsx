@@ -125,7 +125,7 @@ export default function AssignmentEditor({
     due,
     setPoints,
     setDue,
-    setDesc, setAssignmentAvail, AssignmentAvail,
+    setDesc
                                          }: {
     show: boolean;
     handleClose: () => void;
