@@ -1,98 +1,74 @@
-import {ListGroup} from "react-bootstrap";
-import { BsGripVertical } from "react-icons/bs";
-import AssignmentButtons from "./AssignmentButtons.tsx";
-// import AssignmentControls from "./AssignmentControls.tsx";
+import AssignmentControlButtons from "./AssignmentButtons";
+import AssignmentControls from "./AssignmentControls";
+import { BsGripVertical } from 'react-icons/bs';
+import * as db from "../../Database"
 import { useParams } from "react-router";
-
-import LessonControlButtons from "../Modules/LessonControlButtons.tsx";
-import {useDispatch, useSelector} from "react-redux";
-
-import AssignmentControls from "./AssignmentControls.tsx";
-import {useState} from "react";
-import {addAssignment} from "./reducer.ts";
-
+import { useState } from "react";
+import {useSelector} from "react-redux";
 
 export default function Assignments() {
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
-    const isFaculty = currentUser.role === "FACULTY";
   const { cid } = useParams();
-  // const [assignments, setAssignments] = useState<any[]>(db.assignments);
-  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-  const dispatch = useDispatch();
-  const [assignmentName, setAssignmentName] = useState("");
-  const [assignmentDue, setAssignmentDue] = useState("");
-  const [assignmentAvail, setAssignmentAvail] = useState("");
-  const [assignmentDesc, setAssignmentDesc] = useState("");
-  const [assignmentPoints, setAssignmentPoints] = useState("");
+  const [assignments, setAssignments] = useState<any[]>(db.assignments);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+    const isFaculty = currentUser.role === "FACULTY";
+  const deleteAssignment = (assignmentId: string) => {
+    setAssignments(assignments.filter((a) => a._id !== assignmentId));
+  };
 
-  // const addAssignment = () => {
-  //   setAssignments([ ...assignments, { _id: uuidv4(), title: assignmentName, course: cid, due: assignmentDue, available_starting: assignmentDue, description: assignmentDesc, points: assignmentPoints } ]);
-  //   setAssignmentName("");
-  //   setAssignmentDesc("");
-  //   setAssignmentDue("");
-  //   setAssignmentPoints("");
-  //   setAssignmentAvail("");
-  // };
 
-    return (
+
+  return (
     <div id="wd-assignments">
-      {isFaculty &&(<AssignmentControls assignmentName={assignmentName} setAssignmentName={setAssignmentName} addAssignment={() => {
-        dispatch(addAssignment({ title: assignmentName, course: cid, due: assignmentDue, available_starting: assignmentDue, description: assignmentDesc, points: assignmentPoints }));
-        setAssignmentName("");
-        setAssignmentDesc("");
-        setAssignmentDue("");
-        setAssignmentPoints("");
-        console.log(assignmentPoints)
-      }} description={assignmentDesc} due={assignmentDue} points={assignmentPoints} setDesc={setAssignmentDesc} setDue={setAssignmentDue} setPoints={setAssignmentPoints} AssignmentAvail={assignmentAvail} setAssignmentAvail={setAssignmentAvail}/>)}
-      <br />
-      <br />
-      <ListGroup className="rounded-0" id="wd-assignemnts">
-        <ListGroup.Item
-          key={cid}
-          className="wd-assignment p-0 mb-5 fs-5 border-gray"
-        >
+      {isFaculty && <AssignmentControls />}
+      <br /> <br /> <br /> <br />
+      <ul id="wd-modules" className="list-group rounded-0">
+        <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
           <div className="wd-title p-3 ps-2 bg-secondary">
-            <BsGripVertical className="me-2 fs-3" /> Assignments{" "}
-            <AssignmentButtons />
+            <BsGripVertical className="me-2 fs-3" /> ASSIGNMENTS
           </div>
-          {assignments
-            .filter((assignment: any) => assignment.course === cid)
-            .map((assignment: any) => (
-              //   TODO: Maybe fix the href?
-              <ListGroup className="wd-lessons rounded-0">
-                <a
-                  href={isFaculty ?
-                    "#/Kambaz/Courses/" +
-                    assignment.course +
-                    "/Assignments/" +
-                    assignment._id : "#/Kambaz/Courses/" +
-                      assignment.course +
-                      "/Assignments/"
-                  }
-                  className="text-decoration-none"
+          <ul className="wd-lessons list-group rounded-0">
+            {assignments
+              .filter((assignment) => assignment.course === cid)
+              .map((assignment) => (
+                <li
+                  key={assignment._id}
+                  className="wd-lesson list-group-item p-3 ps-1"
                 >
-                  <ListGroup.Item
-                    key={assignment._id}
-                    className="wd-lesson p-3 ps-1"
-                  >
-                    <BsGripVertical className="me-2 fs-3" />
-                    {assignment.title} | {assignment._id}
-                    <br />
-                    <small className="text-muted">
-                      {assignment.points} Points
-                    </small>{" "}
-                    |<small className="text-muted"> Due {assignment.available_starting}</small>
-                    <small className="text-muted">
-                      {" "}
-                      | Available {assignment.available_starting}
-                    </small>
-                    <LessonControlButtons />
-                  </ListGroup.Item>
-                </a>
-              </ListGroup>
-            ))}
-        </ListGroup.Item>
-      </ListGroup>
+                  <div className="d-flex justify-content-between align-items-start">
+                    <div className="d-flex flex-column">
+                      <div className="d-flex align-items-center">
+                        <BsGripVertical className="me-2 fs-3" />
+                        <a
+                          className="text-decoration-none"
+                          href={`#/Kambaz/Courses/${assignment.course}/Assignments/${assignment._id}`}
+                        >
+                          {assignment.title}
+                        </a>
+                      </div>
+                      <div className="assignment-details ms-5">
+                        <div className="assignment-info">
+                          <span className="text-red">
+                            {assignment.description}
+                          </span>{" "}
+                          | <b>Due</b> {assignment.due} |{" "}
+                          <small>{assignment.points} points </small>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="align-self-start mt-n2">
+                      {isFaculty && (
+                        <AssignmentControlButtons
+                          assignmentId={assignment._id}
+                          deleteAssignment={deleteAssignment}
+                        />)
+                      }
+                    </div>
+                  </div>
+                </li>
+              ))}
+          </ul>
+        </li>
+      </ul>
     </div>
   );
 }

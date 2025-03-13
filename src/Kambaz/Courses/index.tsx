@@ -7,13 +7,10 @@ import AssignmentEditor from "./Assignments/Editor";
 import PeopleTable from "../People/Table.tsx";
 import {useParams} from "react-router-dom";
 import {FaAlignJustify} from "react-icons/fa";
-import {useSelector} from "react-redux";
 
 export default function Courses({ courses }: { courses: any[]; }) {
     const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
-    const assignments = useSelector((state: any) => state.assignmentsReducer);
-    console.log(assignments)
     const { pathname } = useLocation();
     return (
         <div id="wd-courses">
@@ -31,7 +28,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
                         <Route path="Home" element={<Home/>}/>
                         <Route path="Modules" element={<Modules/>}/>
                         <Route path="Assignments" element={<Assignments/>}/>
-                        <Route path="Assignments/:aid" element={<AssignmentEditor  AssignmentAvail={""} addAssignment={() => {}} assignmentName={""} description={""} dialogTitle={""} due={""} handleClose={() => {}} points={""} setAssignmentAvail={() => {}} setAssignmentName={() => {}} setDesc={() => {}} setDue={() => {}} setPoints={() => {}} show/>}/>
+                        <Route path="Assignments/:aid" element={<AssignmentEditor />}/>
                         <Route path="People" element={<PeopleTable/>}/>
                         <Route path="Piazza" element={<h1>Piazza</h1>}/>
                         <Route path="Zoom" element={<h1>Zoom</h1>}/>
