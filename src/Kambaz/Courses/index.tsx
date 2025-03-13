@@ -10,7 +10,7 @@ import {FaAlignJustify} from "react-icons/fa";
 import {useSelector} from "react-redux";
 
 export default function Courses({ courses }: { courses: any[]; }) {
-    const { cid, aid } = useParams();
+    const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
     const assignments = useSelector((state: any) => state.assignmentsReducer);
     console.log(assignments)
