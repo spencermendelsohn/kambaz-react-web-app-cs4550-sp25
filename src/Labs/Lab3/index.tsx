@@ -31,13 +31,24 @@ import Add from "./Add.tsx";
 import Square from "./Square.tsx";
 import Highlight from "./Highlight.tsx";
 import PathParameters from "./PathParameters.tsx";
+import { useSelector } from "react-redux";
+import {ListGroup} from "react-bootstrap";
 
 
 export default function Lab3() {
         console.log("Hello world");
+        const { todos } = useSelector((state: any) => state.todosReducer);
     return(
         <div id="wd-lab3">
             <h3>Lab 3</h3>
+                <ListGroup>
+                        {todos.map((todo: any) => (
+                            <ListGroup.Item key={todo.id}>
+                                    {todo.title}
+                            </ListGroup.Item>
+                        ))}
+                </ListGroup>
+                <hr />
                 <div id="wd-lab-parts">
                         <h4>JavaScript</h4>
                         <VariablesAndConstants/>
