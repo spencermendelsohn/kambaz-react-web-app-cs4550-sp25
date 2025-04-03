@@ -1,20 +1,28 @@
 import AssignmentControlButtons from "./AssignmentButtons";
 import AssignmentControls from "./AssignmentControls";
 import { BsGripVertical } from 'react-icons/bs';
-import * as db from "../../Database"
+import * as assignmentsClient from './client';
+
 import { useParams } from "react-router";
-import { useState } from "react";
-import {useSelector} from "react-redux";
+
+import {useDispatch, useSelector} from "react-redux";
+import {setAssignments} from "./reducer.ts";
+import {useEffect} from "react";
 
 export default function Assignments() {
+  const dispatch = useDispatch();
   const { cid } = useParams();
-  const [assignments, setAssignments] = useState<any[]>(db.assignments);
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-    const isFaculty = currentUser.role === "FACULTY";
-  const deleteAssignment = (assignmentId: string) => {
-    setAssignments(assignments.filter((a) => a._id !== assignmentId));
-  };
+  const isFaculty = currentUser.role === "FACULTY";
 
+  const fetchAssignments = async () => {
+    const assignments = await assignmentsClient.fetchAllAssignments(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments()
+  }, []);
 
 
   return (
@@ -27,9 +35,7 @@ export default function Assignments() {
             <BsGripVertical className="me-2 fs-3" /> ASSIGNMENTS
           </div>
           <ul className="wd-lessons list-group rounded-0">
-            {assignments
-              .filter((assignment) => assignment.course === cid)
-              .map((assignment) => (
+            {assignments.map((assignment: any) => (
                 <li
                   key={assignment._id}
                   className="wd-lesson list-group-item p-3 ps-1"
@@ -59,7 +65,6 @@ export default function Assignments() {
                       {isFaculty && (
                         <AssignmentControlButtons
                           assignmentId={assignment._id}
-                          deleteAssignment={deleteAssignment}
                         />)
                       }
                     </div>

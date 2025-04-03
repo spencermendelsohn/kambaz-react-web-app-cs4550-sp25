@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import {Button, Card, Col, FormControl, Row} from "react-bootstrap";
-import { useSelector } from "react-redux";
-import * as db from "./Database";
+import { useSelector} from "react-redux";
 export default function Dashboard({ courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }: {
     courses: any[]; course: any; setCourse: (course: any) => void;
     addNewCourse: () => void; deleteCourse: (course: any) => void;
     updateCourse: () => void; }) {
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
+    const { currentUser } = useSelector(
+        (state: any) => state.accountReducer
+    );
     const isFaculty = currentUser.role === "FACULTY";
-    const { enrollments } = db;
     return (
       <div id="wd-dashboard">
         <h1 id="wd-dashboard-title">Dashboard</h1>
@@ -47,23 +47,12 @@ export default function Dashboard({ courses, course, setCourse, addNewCourse, de
     />
     <hr/></>)}
         <h2 id="wd-dashboard-published">
-          Published Courses ({courses.filter((course) =>
-            enrollments.some(
-                (enrollment) =>
-                    enrollment.user === currentUser._id &&
-                    enrollment.course === course._id
-            )).length})
+          Published Courses ({courses.length})
         </h2>
         <hr />
         <div id="wd-dashboard-courses">
           <Row xs={1} md={5} className="g-4">
-            {courses.filter((course) =>
-                enrollments.some(
-                    (enrollment) =>
-                        enrollment.user === currentUser._id &&
-                        enrollment.course === course._id
-                ))
-                .map((course) => (
+            {courses.map((course) => (
               <Col
                 className="wd-dashboard-course"
                 style={{ width: "300px" }}
@@ -114,6 +103,14 @@ export default function Dashboard({ courses, course, setCourse, addNewCourse, de
                                     Edit
                                 </Button>
                             </>
+                        )}
+                        {!isFaculty && (
+                            <button
+                                className={`btn float-end me-2 btn-warning`}
+                                id="wd-enroll-course-click"
+                            >
+                                Unenroll
+                            </button>
                         )}
                     </Card.Body>
                   </Link>
