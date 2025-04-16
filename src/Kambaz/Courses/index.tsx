@@ -7,8 +7,18 @@ import AssignmentEditor from "./Assignments/Editor";
 import PeopleTable from "../People/Table.tsx";
 import {useParams} from "react-router-dom";
 import {FaAlignJustify} from "react-icons/fa";
+import * as coursesClient from "./client.ts";
+import {useEffect, useState} from "react";
 
 export default function Courses({ courses }: { courses: any[]; }) {
+    const [p, setP] = useState();
+    const fetchPeople = async () => {
+        const people = await coursesClient.findUsersForCourse(cid as string);
+        setP(people)
+    };
+    useEffect(() => {
+        fetchPeople();
+    }, []);
     const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
     const { pathname } = useLocation();
@@ -29,7 +39,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
                         <Route path="Modules" element={<Modules/>}/>
                         <Route path="Assignments" element={<Assignments/>}/>
                         <Route path="Assignments/:aid" element={<AssignmentEditor />}/>
-                        <Route path="People" element={<PeopleTable/>}/>
+                        <Route path="People" element={<PeopleTable users={p}/>}/>
                         <Route path="Piazza" element={<h1>Piazza</h1>}/>
                         <Route path="Zoom" element={<h1>Zoom</h1>}/>
                         <Route path="Quizzes" element={<h1>Quizzes</h1>}/>
